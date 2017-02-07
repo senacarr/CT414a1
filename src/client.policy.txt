@@ -1,0 +1,3 @@
+grant codeBase "file:C:\Users\Public\public_html" {
+    permission java.security.AllPermission;
+};
