@@ -1,3 +1,0 @@
-grant codeBase "file:C:\Users\Senan\workspace\4RMIDemo\src" {
-    permission java.security.AllPermission;
-};
