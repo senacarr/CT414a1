@@ -1,5 +1,6 @@
 package bank;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,8 +43,9 @@ public class Account {
 		return seshID;
 	}
 	
-	public void newTransaction(int timeStamp, String tType, int tAmount) {
-		// transactions.add(new Transaction(timeStamp, tType, tAmount));
+	public void newTransaction(String tType, int tAmount) {
+		LocalDateTime timeStamp = LocalDateTime.now();	
+		transactions.add(new Transaction(timeStamp, tType, tAmount));
 	}
 	
 	public List<Transaction> getTransactions() {

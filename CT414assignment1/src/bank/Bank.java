@@ -29,9 +29,7 @@ public class Bank extends UnicastRemoteObject implements BankInterface {
 		if(userName.isEmpty() || password.isEmpty()) {
 			throw new InvalidLogin("Username or password cannot be empty");
 		}
-		
-		
-		
+
 		
 		// return session ID
 		return 0;

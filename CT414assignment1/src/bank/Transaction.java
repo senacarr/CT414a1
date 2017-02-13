@@ -1,22 +1,25 @@
 package bank;
 
+import java.time.LocalDateTime;
+
 public class Transaction {
 	
-	private String timestamp;
+	private LocalDateTime timestamp;
     private String transactionType;
     private int amount;
     
-    public Transaction(String timestamp, String transactionType, int amount){
+    
+    public Transaction(LocalDateTime timestamp, String transactionType, int amount){
     	this.timestamp = timestamp;
     	this.transactionType = transactionType;
     	this.amount = amount;
     }
 
-	public String getTimestamp() {
+	public LocalDateTime getTimestamp() {
 		return timestamp;
 	}
 
-	public void setTimestamp(String timestamp) {
+	public void setTimestamp(LocalDateTime timestamp) {
 		this.timestamp = timestamp;
 	}
 
@@ -35,6 +38,15 @@ public class Transaction {
 	public void setAmount(int amount) {
 		this.amount = amount;
 	}
+
+	@Override
+	public String toString() {
+		String transactionDescription = 
+				this.timestamp.toString() + "\t" + this.transactionType + "\t€" + amount;	
+		return transactionDescription;
+	}
+	
+	
     
     
     
