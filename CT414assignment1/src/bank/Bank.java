@@ -6,6 +6,7 @@ import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 
 import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Queue;
 import java.util.Timer;
@@ -21,7 +22,8 @@ public class Bank extends UnicastRemoteObject implements BankInterface {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private static HashMap<String, Account> accounts; // users accounts
+	private static HashMap<String, Account> accountMap; // users accounts
+	private static ArrayList<Account> accounts;
 	
 	private static Queue<Long> sessionIDs; // users accounts
 	
@@ -29,12 +31,14 @@ public class Bank extends UnicastRemoteObject implements BankInterface {
 	public Bank() throws RemoteException
 	{
 		sessionIDs = new ArrayDeque<Long>();
-		accounts   = new HashMap<String, Account>();
+		accountMap = new HashMap<String, Account>();
 		
 		for(int i = 0; i < 100; i++) {
 			// new Account(UserName, Password, AccountNum, Amount)
-			accounts.put("user" + i, new Account("user" + i, "password" + i, 100 + i, 10 + i));
+			accountMap.put("user" + i, new Account("user" + i, "password" + i, 100 + i, 10 + i));
 		}	
+		
+		accounts = (ArrayList<Account>) accountMap.values();
 	}
 	
 
@@ -48,7 +52,7 @@ public class Bank extends UnicastRemoteObject implements BankInterface {
 
 		// check user exists on server
 		// check password against account password
-		if(!accounts.containsKey(userName) || !accounts.get(userName).getAccountPassword().equals(passWord)) {
+		if(!accountMap.containsKey(userName) || !accountMap.get(userName).getAccountPassword().equals(passWord)) {
 			throw new InvalidLogin("Username or password is incorrect");			
 		}
 				
@@ -108,8 +112,8 @@ public class Bank extends UnicastRemoteObject implements BankInterface {
 		Account activeAccount;
 		//need to verify that this account can be manipulated (valid sessionID)
 		// get the account relevant account
-		for (int i = 0; i<accounts.size(); i++){
-			if (accounts.get(i).getAccountNum() == accountnum){
+		for (int i = 0; i < accounts.size(); i++) {
+			if (accounts.get(i).getAccountNum() == accountnum) {
 				activeAccount = accounts.get(i);
 				activeAccount.setAmount(activeAccount.getAmount() + amount);
 				activeAccount.newTransaction("Deposit", amount);			
@@ -117,17 +121,14 @@ public class Bank extends UnicastRemoteObject implements BankInterface {
 			}
 			System.out.println("Invalid Account Number");
 		}
-		
-		
-		
-		
+				
 	}
 
 	@Override
 	public void withdraw(int accountnum, int amount, long sessionID) throws RemoteException, InvalidSession {
 		Account activeAccount;
-		for (int i = 0; i<accounts.size(); i++){
-			if (accounts.get(i).getAccountNum() == accountnum){
+		for (int i = 0; i < accounts.size(); i++) {
+			if (accounts.get(i).getAccountNum() == accountnum) {
 				activeAccount = accounts.get(i);
 				if (activeAccount.getAmount() < amount){
 					System.out.println("Insufficient Funds!");
@@ -146,7 +147,7 @@ public class Bank extends UnicastRemoteObject implements BankInterface {
 	public int inquiry(int accountnum, long sessionID) throws RemoteException, InvalidSession {
 		
 		Account activeAccount;
-		for (int i = 0; i<accounts.size(); i++){
+		for (int i = 0; i < accounts.size(); i++){
 			if (accounts.get(i).getAccountNum() == accountnum){
 				activeAccount = accounts.get(i);
 				return activeAccount.getAmount();
@@ -160,8 +161,8 @@ public class Bank extends UnicastRemoteObject implements BankInterface {
 	@Override
 	public Statement getStatement(int account, String from, String to, long sessionID) throws RemoteException, InvalidSession {
 		Account activeAccount;
-		for (int i = 0; i<accounts.size(); i++){
-			if (accounts.get(i).getAccountNum() == account){
+		for (int i = 0; i < accounts.size(); i++) {
+			if (accounts.get(i).getAccountNum() == account) {
 				activeAccount = accounts.get(i);
 				Statement activeStatement = new Statement(activeAccount, from, to);
 				return activeStatement;
