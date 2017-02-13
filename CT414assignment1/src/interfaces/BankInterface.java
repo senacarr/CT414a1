@@ -5,6 +5,9 @@ import java.rmi.RemoteException;
 import java.util.Date;
 
 import bank.InvalidLogin;
+import bank.InvalidSession;
+
+import bank.Statement;
 
 public interface BankInterface extends Remote {
 	

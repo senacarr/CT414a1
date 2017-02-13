@@ -6,8 +6,8 @@ import java.util.Date;
 import java.util.List;
 
 import interfaces.BankInterface;
-import interfaces.InvalidSession;
-import interfaces.Statement;
+import bank.InvalidSession;
+import bank.Statement;
 
 public class Bank extends UnicastRemoteObject implements BankInterface {
 
@@ -27,9 +27,13 @@ public class Bank extends UnicastRemoteObject implements BankInterface {
 		// TODO Auto-generated method stub
 		
 		if(userName.isEmpty() || password.isEmpty()) {
-			throw new InvalidLogin();
+			throw new InvalidLogin("Username or password cannot be empty");
 		}
 		
+		
+		
+		
+		// return session ID
 		return 0;
 	}
 
