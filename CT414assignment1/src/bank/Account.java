@@ -10,16 +10,13 @@ public class Account {
 	private String password;
 	private int accountNum;
 	private int amount;
-	private long seshID;
 	private List<Transaction> transactions;
-	
-	
-	public Account(String uName, String uPassword, int uAccountNum, int uAmount, long uSeshID) {
+			
+	public Account(String uName, String uPassword, int uAccountNum, int uAmount) {
 		this.name         = uName;
 		this.password     = uPassword;
 		this.accountNum   = uAccountNum;
 		this.amount       = uAmount;
-		this.seshID       = uSeshID;
 		this.transactions = new ArrayList<Transaction>();
 	}
 
@@ -43,19 +40,16 @@ public class Account {
 		return amount;
 	}
 	
-	public long getSessionID() {
-		return seshID;
-	}
-	
 	public void newTransaction(String tType, int tAmount) {
 		LocalDateTime timeStamp = LocalDateTime.now();	
 		transactions.add(new Transaction(timeStamp, tType, tAmount));
-	}
 	
 	public List<Transaction> getTransactions() {
 		return transactions == null ? new ArrayList<Transaction>() : transactions;
 	}
-		
+
+
+			
 }
 
 
