@@ -43,6 +43,7 @@ public class Account {
 	public void newTransaction(String tType, int tAmount) {
 		LocalDateTime timeStamp = LocalDateTime.now();	
 		transactions.add(new Transaction(timeStamp, tType, tAmount));
+	}
 	
 	public List<Transaction> getTransactions() {
 		return transactions == null ? new ArrayList<Transaction>() : transactions;
