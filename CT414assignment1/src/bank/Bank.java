@@ -1,6 +1,8 @@
 package bank;
 
 import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 
 import java.util.ArrayDeque;
@@ -171,8 +173,25 @@ public class Bank extends UnicastRemoteObject implements BankInterface {
 	}
 	
 	public static void main(String[] args) {
-		
-		
+		if (System.getSecurityManager() == null) {
+            System.setSecurityManager(new SecurityManager());
+        }
+		try {
+			// create remote object
+			String name          = "Bank";
+			BankInterface server = new Bank();
+			BankInterface stub   = (BankInterface) UnicastRemoteObject.exportObject(server, 0);
+			
+			// create and bind registry
+			Registry registry = LocateRegistry.createRegistry(1099);
+            registry.rebind(name, stub);
+			
+			System.out.println("Bound");
+			
+		} catch (RemoteException e) {
+			System.err.println(e.getMessage());
+			e.printStackTrace();
+		}
 		
 		
 	}
