@@ -2,9 +2,7 @@ package bank;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.Date;
 import java.util.List;
-
 import interfaces.BankInterface;
 import bank.InvalidSession;
 import bank.Statement;
@@ -76,7 +74,16 @@ public class Bank extends UnicastRemoteObject implements BankInterface {
 
 	@Override
 	public int inquiry(int accountnum, long sessionID) throws RemoteException, InvalidSession {
-		// TODO Auto-generated method stub
+		
+		Account activeAccount;
+		for (int i = 0; i<accounts.size(); i++){
+			if (accounts.get(i).getAccountNum() == accountnum){
+				activeAccount = accounts.get(i);
+				return activeAccount.getAmount();
+			}
+			System.out.println("Invalid Account Number");
+		}
+		
 		return 0;
 	}
 
