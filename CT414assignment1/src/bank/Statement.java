@@ -71,7 +71,7 @@ public class Statement implements StatementInterface {
 		for (int i = 0; i < this.getTransations().size(); i++){
 			statementOutput = statementOutput + this.getTransations().get(i).toString() + "\n";
 		}
-		
+		statementOutput = statementOutput + "Balance: €" + acc.getAmount();
 		
 		return statementOutput;
 	}

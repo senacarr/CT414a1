@@ -36,14 +36,41 @@ public class Bank extends UnicastRemoteObject implements BankInterface {
 	}
 
 	@Override
-	public void deposit() throws RemoteException, InvalidSession {
-		// TODO Auto-generated method stub
+	public void deposit(int accountnum, int amount) throws RemoteException, InvalidSession {
+		Account activeAccount;
+		//need to verify that this account can be manipulated (valid sessionID)
+		// get the account relevant account
+		for (int i = 0; i<accounts.size(); i++){
+			if (accounts.get(i).getAccountNum() == accountnum){
+				activeAccount = accounts.get(i);
+				activeAccount.setAmount(activeAccount.getAmount() + amount);
+				activeAccount.newTransaction("Deposit", amount);			
+				break;
+			}
+			System.out.println("Invalid Account Number");
+		}
+		
+		
+		
 		
 	}
 
 	@Override
 	public void withdraw(int accountnum, int amount, long sessionID) throws RemoteException, InvalidSession {
-		// TODO Auto-generated method stub
+		Account activeAccount;
+		for (int i = 0; i<accounts.size(); i++){
+			if (accounts.get(i).getAccountNum() == accountnum){
+				activeAccount = accounts.get(i);
+				if (activeAccount.getAmount() < amount){
+					System.out.println("Insufficient Funds!");
+					break;
+				} 
+				activeAccount.setAmount(activeAccount.getAmount() - amount);
+				activeAccount.newTransaction("Withdrawal", amount);			
+				break;
+			}
+			System.out.println("Invalid Account Number");
+		}
 		
 	}
 
@@ -54,8 +81,17 @@ public class Bank extends UnicastRemoteObject implements BankInterface {
 	}
 
 	@Override
-	public Statement getStatement(Date from, Date to, long sessionID) throws RemoteException, InvalidSession {
-		// TODO Auto-generated method stub
+	public Statement getStatement(int account, String from, String to, long sessionID) throws RemoteException, InvalidSession {
+		Account activeAccount;
+		for (int i = 0; i<accounts.size(); i++){
+			if (accounts.get(i).getAccountNum() == account){
+				activeAccount = accounts.get(i);
+				Statement activeStatement = new Statement(activeAccount, from, to);
+				return activeStatement;
+			}
+			System.out.println("Invalid Account Number");
+		}
+				
 		return null;
 	}
 	

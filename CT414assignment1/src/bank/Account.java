@@ -23,6 +23,10 @@ public class Account {
 		this.transactions = new ArrayList<Transaction>();
 	}
 
+	public void setAmount(int amount) {
+		this.amount = amount;
+	}
+
 	public String getAccountName() {
 		return name;
 	}
