@@ -18,7 +18,7 @@ public class ATM {
 			String result = "";
 			switch (args[1]) {
 				case "login": 
-					bank.login(args[2], args[3]);
+					result = bank.login(args[2], args[3]);
 					break;
 				case "deposit": 
 					result = bank.deposit(Integer.parseInt(args[2]), Integer.parseInt(args[3]));
