@@ -38,7 +38,8 @@ public class Bank extends UnicastRemoteObject implements BankInterface {
 			accountMap.put("user" + i, new Account("user" + i, "password" + i, 100 + i, 10 + i));
 		}	
 		
-		accounts = (ArrayList<Account>) accountMap.values();
+		accounts = new ArrayList<Account>();
+		accounts.addAll(accountMap.values());
 	}
 	
 
@@ -203,17 +204,16 @@ public class Bank extends UnicastRemoteObject implements BankInterface {
 	
 	public static void main(String[] args) {
 		if (System.getSecurityManager() == null) {
-            System.setSecurityManager(new SecurityManager());
+            //System.setSecurityManager(new SecurityManager());
         }
 		try {
 			// create remote object
 			String name          = "Bank";
 			BankInterface server = new Bank();
-			BankInterface stub   = (BankInterface) UnicastRemoteObject.exportObject(server, 0);
 			
 			// create and bind registry
 			Registry registry = LocateRegistry.createRegistry(1099);
-            registry.rebind(name, stub);
+            registry.rebind(name, server);
 			
 			System.out.println("Bound");
 			
