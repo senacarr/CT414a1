@@ -18,13 +18,13 @@ public class DepositTest {
 			e.printStackTrace();
 		}
 		try {
-			testBank.deposit(101, 256);
+			System.out.println(testBank.deposit(101, 256)); 
 		} catch (InvalidSession e) {
 			e.printStackTrace();
 		}
 		
 		try {
-			testBank.withdraw(101, 100);
+			System.out.println(testBank.withdraw(101, 100)); 
 		} catch (InvalidSession e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
