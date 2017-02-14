@@ -13,6 +13,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import interfaces.BankInterface;
+import interfaces.StatementInterface;
 import bank.InvalidSession;
 import bank.Statement;
 
@@ -78,7 +79,7 @@ public class Bank extends UnicastRemoteObject implements BankInterface {
 //			@Override
 //			public void run() {
 //				try {
-//					logout(0);
+//					logout();
 //				} catch (RemoteException | InvalidSession e) {
 //					e.printStackTrace();
 //				}
@@ -89,6 +90,7 @@ public class Bank extends UnicastRemoteObject implements BankInterface {
 		// return session ID to client, track session ID on server
 		long sID = (long) Math.floor(Math.random() * 10000);
 		sessionIDs.add(sID);
+		accountMap.get(userName).setSessionID(sID);
 		
 		System.out.println("Logged In");
 		return sID;
@@ -112,9 +114,7 @@ public class Bank extends UnicastRemoteObject implements BankInterface {
 	public void deposit(int accountnum, int amount) throws RemoteException, InvalidSession {
 		Account activeAccount;
 		//need to verify that this account can be manipulated (valid sessionID)
-		
-		
-		
+				
 		// get the account relevant account
 		for (int i = 0; i < accounts.size(); i++) {
 			if (accounts.get(i).getAccountNum() == accountnum) {
@@ -130,9 +130,7 @@ public class Bank extends UnicastRemoteObject implements BankInterface {
 					throw new InvalidSession("Session Expired");
 				}
 			}
-			System.out.println("Invalid Account Number");
 		}
-				
 	}
 
 	@Override
@@ -156,9 +154,7 @@ public class Bank extends UnicastRemoteObject implements BankInterface {
 					throw new InvalidSession("Session Expired");
 				}
 			}
-			System.out.println("Invalid Account Number");
 		}
-		
 	}
 
 	@Override
@@ -174,14 +170,14 @@ public class Bank extends UnicastRemoteObject implements BankInterface {
 					throw new InvalidSession("Session Expired");
 				}
 			}
-			System.out.println("Invalid Account Number");
 		}
-		
+
+		System.out.println("Invalid Account Number");
 		return 0;
 	}
 
 	@Override
-	public Statement getStatement(int account, String from, String to) throws RemoteException, InvalidSession {
+	public StatementInterface getStatement(int account, String from, String to) throws RemoteException, InvalidSession {
 		Account activeAccount;
 		for (int i = 0; i < accounts.size(); i++) {
 			if (accounts.get(i).getAccountNum() == account) {
@@ -196,15 +192,14 @@ public class Bank extends UnicastRemoteObject implements BankInterface {
 				}
 				
 			}
-			System.out.println("Invalid Account Number");
 		}
-				
+		System.out.println("Invalid Account Number");				
 		return null;
 	}
 	
 	public static void main(String[] args) {
 		if (System.getSecurityManager() == null) {
-            System.setSecurityManager(new SecurityManager());
+            //System.setSecurityManager(new SecurityManager());
         }
 		try {
 			// create remote object

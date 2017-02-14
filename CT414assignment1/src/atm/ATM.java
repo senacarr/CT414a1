@@ -3,17 +3,17 @@ package atm;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 
-import bank.Bank;
-import bank.Statement;
+import interfaces.BankInterface;
+import interfaces.StatementInterface;
 
 public class ATM {
 
 	public static void main(String[] args) {
 		
 		try {
-			String name       = "Bank";
-			Registry registry = LocateRegistry.getRegistry(args[0]);
-			Bank bank         = (Bank) registry.lookup(name);
+			String name        = "Bank";
+			Registry registry  = LocateRegistry.getRegistry(args[0]);
+			BankInterface bank = (BankInterface) registry.lookup(name);
 			
 			switch (args[1]) {
 				case "login": 
@@ -30,7 +30,7 @@ public class ATM {
 					System.out.println("Balance: " + amount);
 					break;
 				case "statement":
-					Statement statement = bank.getStatement(Integer.parseInt(args[2]), args[3], args[4]);
+					StatementInterface statement = bank.getStatement(Integer.parseInt(args[2]), args[3], args[4]);
 					if(statement != null) {
 						System.out.println(statement.toString());
 					}

@@ -6,8 +6,6 @@ import java.rmi.RemoteException;
 import bank.InvalidLogin;
 import bank.InvalidSession;
 
-import bank.Statement;
-
 public interface BankInterface extends Remote {
 	
 	public long login(String userName, String password) throws RemoteException, InvalidLogin;
@@ -20,7 +18,7 @@ public interface BankInterface extends Remote {
 
 	public int inquiry(int accountnum) throws RemoteException, InvalidSession;
 
-	public Statement getStatement(int accountnum, String from, String to) throws RemoteException, InvalidSession;
+	public StatementInterface getStatement(int accountnum, String from, String to) throws RemoteException, InvalidSession;
 
 }
 
