@@ -125,7 +125,7 @@ public class Bank extends UnicastRemoteObject implements BankInterface {
 	}
 
 	@Override
-	public void withdraw(int accountnum, int amount, long sessionID) throws RemoteException, InvalidSession {
+	public void withdraw(int accountnum, int amount) throws RemoteException, InvalidSession {
 		Account activeAccount;
 		for (int i = 0; i < accounts.size(); i++) {
 			if (accounts.get(i).getAccountNum() == accountnum) {
@@ -144,7 +144,7 @@ public class Bank extends UnicastRemoteObject implements BankInterface {
 	}
 
 	@Override
-	public int inquiry(int accountnum, long sessionID) throws RemoteException, InvalidSession {
+	public int inquiry(int accountnum) throws RemoteException, InvalidSession {
 		
 		Account activeAccount;
 		for (int i = 0; i < accounts.size(); i++){
@@ -159,7 +159,7 @@ public class Bank extends UnicastRemoteObject implements BankInterface {
 	}
 
 	@Override
-	public Statement getStatement(int account, String from, String to, long sessionID) throws RemoteException, InvalidSession {
+	public Statement getStatement(int account, String from, String to) throws RemoteException, InvalidSession {
 		Account activeAccount;
 		for (int i = 0; i < accounts.size(); i++) {
 			if (accounts.get(i).getAccountNum() == account) {
