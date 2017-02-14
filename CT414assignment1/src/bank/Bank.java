@@ -111,13 +111,23 @@ public class Bank extends UnicastRemoteObject implements BankInterface {
 	public void deposit(int accountnum, int amount) throws RemoteException, InvalidSession {
 		Account activeAccount;
 		//need to verify that this account can be manipulated (valid sessionID)
+		
+		
+		
 		// get the account relevant account
 		for (int i = 0; i < accounts.size(); i++) {
 			if (accounts.get(i).getAccountNum() == accountnum) {
 				activeAccount = accounts.get(i);
-				activeAccount.setAmount(activeAccount.getAmount() + amount);
-				activeAccount.newTransaction("Deposit", amount);			
-				break;
+				
+				if (checkSessionID(activeAccount)){
+				
+					activeAccount.setAmount(activeAccount.getAmount() + amount);
+					activeAccount.newTransaction("Deposit", amount);			
+					break;
+				}
+				else{
+					throw new InvalidSession("Session Expired");
+				}
 			}
 			System.out.println("Invalid Account Number");
 		}
@@ -130,13 +140,20 @@ public class Bank extends UnicastRemoteObject implements BankInterface {
 		for (int i = 0; i < accounts.size(); i++) {
 			if (accounts.get(i).getAccountNum() == accountnum) {
 				activeAccount = accounts.get(i);
-				if (activeAccount.getAmount() < amount){
-					System.out.println("Insufficient Funds!");
+				
+				if (checkSessionID(activeAccount)){
+				
+					if (activeAccount.getAmount() < amount){
+						System.out.println("Insufficient Funds!");
+						break;
+					} 
+					activeAccount.setAmount(activeAccount.getAmount() - amount);
+					activeAccount.newTransaction("Withdrawal", amount);			
 					break;
-				} 
-				activeAccount.setAmount(activeAccount.getAmount() - amount);
-				activeAccount.newTransaction("Withdrawal", amount);			
-				break;
+				}
+				else{
+					throw new InvalidSession("Session Expired");
+				}
 			}
 			System.out.println("Invalid Account Number");
 		}
@@ -150,7 +167,11 @@ public class Bank extends UnicastRemoteObject implements BankInterface {
 		for (int i = 0; i < accounts.size(); i++){
 			if (accounts.get(i).getAccountNum() == accountnum){
 				activeAccount = accounts.get(i);
+				if (checkSessionID(activeAccount))
 				return activeAccount.getAmount();
+				else{
+					throw new InvalidSession("Session Expired");
+				}
 			}
 			System.out.println("Invalid Account Number");
 		}
@@ -164,8 +185,15 @@ public class Bank extends UnicastRemoteObject implements BankInterface {
 		for (int i = 0; i < accounts.size(); i++) {
 			if (accounts.get(i).getAccountNum() == account) {
 				activeAccount = accounts.get(i);
-				Statement activeStatement = new Statement(activeAccount, from, to);
-				return activeStatement;
+				if (checkSessionID(activeAccount)){
+				
+					Statement activeStatement = new Statement(activeAccount, from, to);
+					return activeStatement;
+				}
+				else{
+					throw new InvalidSession("Session Has Expired");
+				}
+				
 			}
 			System.out.println("Invalid Account Number");
 		}
@@ -195,9 +223,19 @@ public class Bank extends UnicastRemoteObject implements BankInterface {
 		}
 		
 		
+		
+		
 	}
 	
-
+	public boolean checkSessionID(Account acc){
+		//compare the session ID of the acc with the queue
+		if (sessionIDs.contains(acc.getSessionID())){
+			return true;
+		}
+		
+		return false;
+		
+	}
 }
 
 

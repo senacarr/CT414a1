@@ -11,6 +11,7 @@ public class Account {
 	private int accountNum;
 	private int amount;
 	private List<Transaction> transactions;
+	private long sessionID;
 			
 	public Account(String uName, String uPassword, int uAccountNum, int uAmount) {
 		this.name         = uName;
@@ -49,6 +50,14 @@ public class Account {
 		return transactions == null ? new ArrayList<Transaction>() : transactions;
 	}
 
+	public long getSessionID() {
+		return sessionID;
+	}
+
+	public void setSessionID(long sessionID) {
+		this.sessionID = sessionID;
+	}
+	
 
 			
 }
