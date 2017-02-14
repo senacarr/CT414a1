@@ -146,7 +146,7 @@ public class Bank extends UnicastRemoteObject implements BankInterface {
 				if (checkSessionID(activeAccount)){
 				
 					if (activeAccount.getAmount() < amount){
-						message += "Insufficient Funds!";
+						message += " Insufficient Funds!";
 						break;
 					} 
 					activeAccount.setAmount(activeAccount.getAmount() - amount);
@@ -184,7 +184,7 @@ public class Bank extends UnicastRemoteObject implements BankInterface {
 	}
 
 	@Override
-	public Statement getStatement(int account, String from, String to) throws RemoteException, InvalidSession {
+	public StatementInterface getStatement(int account, String from, String to) throws RemoteException, InvalidSession {
 		Account activeAccount;
 		for (int i = 0; i < accounts.size(); i++) {
 			if (accounts.get(i).getAccountNum() == account) {
