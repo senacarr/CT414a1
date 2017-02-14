@@ -204,7 +204,7 @@ public class Bank extends UnicastRemoteObject implements BankInterface {
 	
 	public static void main(String[] args) {
 		if (System.getSecurityManager() == null) {
-            //System.setSecurityManager(new SecurityManager());
+            System.setSecurityManager(new SecurityManager());
         }
 		try {
 			// create remote object
