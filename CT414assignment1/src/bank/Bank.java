@@ -45,8 +45,7 @@ public class Bank extends UnicastRemoteObject implements BankInterface {
 	
 
 	@Override
-	public long login(String userName, String passWord) throws RemoteException, InvalidLogin {
-		
+	public String login(String userName, String passWord) throws RemoteException, InvalidLogin {		
 		// check for valid string
 		if(userName.isEmpty() || passWord.isEmpty()) {
 			throw new InvalidLogin("Username or password cannot be empty");
@@ -93,7 +92,7 @@ public class Bank extends UnicastRemoteObject implements BankInterface {
 		accountMap.get(userName).setSessionID(sID);
 		
 		System.out.println("Logged In");
-		return sID;
+		return "LOGIN SUCCESS";
 	}
 	
 	@Override
@@ -111,10 +110,11 @@ public class Bank extends UnicastRemoteObject implements BankInterface {
 	}
 
 	@Override
-	public void deposit(int accountnum, int amount) throws RemoteException, InvalidSession {
+	public String deposit(int accountnum, int amount) throws RemoteException, InvalidSession {
 		Account activeAccount;
 		//need to verify that this account can be manipulated (valid sessionID)
-				
+		String message = "DEPOSIT FAILURE";
+		
 		// get the account relevant account
 		for (int i = 0; i < accounts.size(); i++) {
 			if (accounts.get(i).getAccountNum() == accountnum) {
@@ -123,7 +123,8 @@ public class Bank extends UnicastRemoteObject implements BankInterface {
 				if (checkSessionID(activeAccount)){
 				
 					activeAccount.setAmount(activeAccount.getAmount() + amount);
-					activeAccount.newTransaction("Deposit", amount);			
+					activeAccount.newTransaction("Deposit", amount);
+					message = "DEPOSIT SUCCESS";
 					break;
 				}
 				else{
@@ -131,12 +132,13 @@ public class Bank extends UnicastRemoteObject implements BankInterface {
 				}
 			}
 		}
-
+		return message;
 	}
 
 	@Override
-	public void withdraw(int accountnum, int amount) throws RemoteException, InvalidSession {
+	public String withdraw(int accountnum, int amount) throws RemoteException, InvalidSession {
 		Account activeAccount;
+		String message = "WITHDRAW FAILURE";
 		for (int i = 0; i < accounts.size(); i++) {
 			if (accounts.get(i).getAccountNum() == accountnum) {
 				activeAccount = accounts.get(i);
@@ -144,11 +146,12 @@ public class Bank extends UnicastRemoteObject implements BankInterface {
 				if (checkSessionID(activeAccount)){
 				
 					if (activeAccount.getAmount() < amount){
-						System.out.println("Insufficient Funds!");
+						message += "Insufficient Funds!";
 						break;
 					} 
 					activeAccount.setAmount(activeAccount.getAmount() - amount);
-					activeAccount.newTransaction("Withdrawal", amount);			
+					activeAccount.newTransaction("Withdrawal", amount);	
+					message = "WITHDRAW SUCCESS";
 					break;
 				}
 				else{
@@ -157,6 +160,7 @@ public class Bank extends UnicastRemoteObject implements BankInterface {
 			}
 
 		}
+		return message;
 	}
 
 	@Override
@@ -228,12 +232,7 @@ public class Bank extends UnicastRemoteObject implements BankInterface {
 	
 	public boolean checkSessionID(Account acc){
 		//compare the session ID of the acc with the queue
-		if (sessionIDs.contains(acc.getSessionID())){
-			return true;
-		}
-		
-		return false;
-		
+		return sessionIDs.contains(acc.getSessionID());		
 	}
 }
 

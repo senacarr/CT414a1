@@ -8,13 +8,13 @@ import bank.InvalidSession;
 
 public interface BankInterface extends Remote {
 	
-	public long login(String userName, String password) throws RemoteException, InvalidLogin;
+	public String login(String userName, String password) throws RemoteException, InvalidLogin;
 	
-	public void deposit(int accountnum, int amount) throws RemoteException, InvalidSession;
+	public String deposit(int accountnum, int amount) throws RemoteException, InvalidSession;
 
 	public boolean logout() throws RemoteException, InvalidSession;
 	
-	public void withdraw(int accountnum, int amount) throws RemoteException, InvalidSession;
+	public String withdraw(int accountnum, int amount) throws RemoteException, InvalidSession;
 
 	public int inquiry(int accountnum) throws RemoteException, InvalidSession;
 

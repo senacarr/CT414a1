@@ -15,31 +15,32 @@ public class ATM {
 			Registry registry  = LocateRegistry.getRegistry(args[0]);
 			BankInterface bank = (BankInterface) registry.lookup(name);
 			
+			String result = "";
 			switch (args[1]) {
 				case "login": 
 					bank.login(args[2], args[3]);
 					break;
 				case "deposit": 
-					bank.deposit(Integer.parseInt(args[2]), Integer.parseInt(args[3]));
+					result = bank.deposit(Integer.parseInt(args[2]), Integer.parseInt(args[3]));
 					break;
 				case "withdraw":
-					bank.withdraw(Integer.parseInt(args[2]), Integer.parseInt(args[3]));
+					result = bank.withdraw(Integer.parseInt(args[2]), Integer.parseInt(args[3]));
 					break;
 				case "inqury":
 					int amount = bank.inquiry(Integer.parseInt(args[2]));
-					System.out.println("Balance: " + amount);
+					result = "Balance: " + amount;
 					break;
 				case "statement":
 					StatementInterface statement = bank.getStatement(Integer.parseInt(args[2]), args[3], args[4]);
 					if(statement != null) {
-						System.out.println(statement.toString());
+						result = statement.toString();
 					}
 					break;
-				default: System.err.println("invalid request");
+				default: result ="invalid request";
 					break;
-					
-			
+
 			}
+			System.out.println(result);
 			
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
