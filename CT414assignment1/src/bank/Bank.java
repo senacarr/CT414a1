@@ -184,7 +184,7 @@ public class Bank extends UnicastRemoteObject implements BankInterface {
 	}
 
 	@Override
-	public StatementInterface getStatement(int account, String from, String to) throws RemoteException, InvalidSession {
+	public Statement getStatement(int account, String from, String to) throws RemoteException, InvalidSession {
 		Account activeAccount;
 		for (int i = 0; i < accounts.size(); i++) {
 			if (accounts.get(i).getAccountNum() == account) {
